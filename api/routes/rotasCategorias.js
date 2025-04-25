@@ -1,20 +1,25 @@
 import { BD } from "../db.js";
 
+//Rota de nova categoria
 class rotasCategorias {
-    static async novaCategoria(req, res) {
+    static async nova(req, res) {
         const { nome, tipo_transacao, gasto_fixo, id_usuario } = req.body;
 
-        // // Validação opcional (boa prática)
-        // if (!nome || !tipo_transacao || !gasto_fixo || !id_usuario) {
-        //     return res.status(400).json({ error: "Todos os campos são obrigatórios" });
-        // }
+        // // Validando dados
+        if (!nome || !tipo_transacao || !gasto_fixo || !id_usuario) {
+              return res.status(400).json({ error: "Todos os campos são obrigatórios" });
+        }
 
         try {
-            const categorias = await BD.query(`INSERT INTO categorias
-                 (nome, tipo_transacao, gasto_fixo, id_usuario) VALUES ($1, $2, $3, $4) RETURNING *`,
-                 [nome, tipo_transacao, gasto_fixo, id_usuario]);
-            return res.status(201).json(categorias.rows[0]);
+            const categorias = await BD.query(
+                `INSERT INTO categorias (nome, tipo_transacao, gasto_fixo, id_usuario)
+                     VALUES ($1, $2, $3, $4) RETURNING *`,
+                 [nome, tipo_transacao, gasto_fixo, id_usuario]
+                );
+
+        res.status(201).json("Categoria Cadastrada");
         } catch (error) {
+            console.error
             return res.status(500).json({ error: "Erro ao criar Categoria", message: error.message });
         }
     }
@@ -111,6 +116,33 @@ static async Atualizar(req, res){
             return res.status(500).json({ error: "Erro ao listar categoria", error: error.message });
         }
 }
+
+    //filtrar por tipo de categoria
+    static async filtrarCategoria(req, res) {
+        // o valor sera enviado por parametro na url, deve ser enviado dessa maneira
+        // ?tipo_transacao=entrada
+        const { tipo_transacao } = req.query;
+
+        try{
+            const filtros = [];
+            const valores = [];
+
+            if(tipo_transacao){
+                filtros.push(`tipo_transacao = $${valores.length + 1}`);
+                valores.push(tipo_transacao);
+            }
+            const query = `
+            SELECT * FROM categorias
+            ${filtros.length ? `WHERE ${filtros.join(" AND ")} ` : ""} and ativo = true
+            ORDER BY id_categoria DESC 
+            `; // em ordem decrescente
+
+            const resultado = await BD.query(query, valores)
+
+        }catch(error){
+
+        }
+  }
 }
 
 export default rotasCategorias;
