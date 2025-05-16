@@ -1,7 +1,10 @@
 import express from 'express'
 import { testarConexao } from './db.js'
 import cors from 'cors';
-import rotasUsuarios, {autenticarToken} from './routes/rotasUsuarios.js';
+import rotasUsuarios, { autenticarToken } from './routes/rotasUsuarios.js';
+import rotasCategorias from './routes/rotasCategorias.js';
+import rotasContas from './routes/rotasContas.js';
+import rotasTransacoes from './routes/rotasTransacoes.js';
 
 const app = express(); //criar instancia do express
 testarConexao();
@@ -24,7 +27,8 @@ app.delete('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.deletar)
 
 // //Rotas categorias
 app.post('/categorias', autenticarToken, rotasCategorias.nova)
-// app.get('/categorias', rotasCategorias.listar)
+app.get('/categorias/filtrarCategoria', rotasCategorias.filtrarCategoria)
+app.get('/categorias', autenticarToken, rotasCategorias.listarTodas)
 // app.get('/categorias/:id_categoria', rotasCategorias.listarPorId)
 // app.patch('/categorias/:id_categoria', rotasCategorias.atualizar)
 // app.put('/categorias/:id_categoria', rotasCategorias.atualizarTodos)
@@ -38,16 +42,19 @@ app.post('/categorias', autenticarToken, rotasCategorias.nova)
 // app.put('/subcategorias/:id_subcategoria', rotasSubcategorias.atualizarTodos)
 // app.delete('/subcategorias/:id_subcategoria', rotasSubcategorias.deletar)
 
-// // //Rotas local Transacao
-// app.post('/localtransacao', rotaslocalTransacoes.nova)
-// app.get('/localtransacao', rotaslocalTransacoes.listar)
-// app.get('/localtransacao/:id_local_transacao', rotaslocalTransacoes.listarPorID)
-// app.patch('/localtransacao/:id_local_transacao', rotaslocalTransacoes.atualizar)
-// app.put('/localtransacao/:id_local_transacao', rotaslocalTransacoes.atualizarTodos)
-// app.delete('/localtransacao/:id_local_transacao', rotaslocalTransacoes.deletar)
+// // //rotasContas
+app.post('/rotasContas/:id_rotasContas', rotasContas.novaConta)
+app.get('/rotasContas/:id_rotasContas', rotasContas.listarContas)
+app.get('/rotasContas/:id_rotasContas', rotasContas.listarContaPorID)
+app.patch('/rotasContas/:id_rotasContas', rotasContas.atualizarContas)
+app.put('/rotasContas/:id_rotasContas', rotasContas.atualizarTodasContas)
+app.delete('/rotasContas/:id_rotasContas', rotasContas.deletarConta)
 
 // // //Rotas Transacoes
-// app.post('/transacoes', rotasTransacoes.nova)
+app.post('/transacoes', rotasTransacoes.novaTransacoes)
+app.get('/transacoes/somarTransacoes', rotasTransacoes.somarTransacoes)
+app.get('/transacoes/filtroData', rotasTransacoes.filtrarPorData)
+app.get('/transacoes/transacoesVencidas/:id_usuario', rotasTransacoes.transacoesVencidas)
 // app.get('/transacoes', rotasTransacoes.listar)
 // app.get('/transacoes/:id_transacao', rotasTransacoes.listarPorID)
 // app.patch('/transacoes/:id_transacao', rotasTransacoes.atualizar)
