@@ -6,49 +6,54 @@ import rotasCategorias from './routes/rotasCategorias.js';
 import rotasContas from './routes/rotasContas.js';
 import rotasTransacoes from './routes/rotasTransacoes.js';
 
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpec from './swagger.js';
+
 const app = express(); //criar instancia do express
 testarConexao();
 
 app.use(cors());
 app.use(express.json());
 
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
 app.get('/', (req, res) => {
-    res.send('API Funcionando!')
+    res.send('/api-docs')
 })
 
 //Rotas usuarios
 app.post('/usuarios', rotasUsuarios.novoUsuario)
 app.post('/usuarios/login', rotasUsuarios.login)
 app.get('/usuarios', autenticarToken, rotasUsuarios.listarUsuarios)
-// app.get('/usuarios/:id_usuario', rotasUsuarios.listarUsuariosPorId)
+//app.get('/usuarios/:id_usuario', rotasUsuarios.listarUsuariosPorId)
 app.path('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.atualizar)
-// app.put('/usuarios/:id_usuario', rotasUsuarios.atualizarTodos)
+//app.put('/usuarios/:id_usuario', rotasUsuarios.atualizarTodos)
 app.delete('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.deletar)
 
 // //Rotas categorias
 app.post('/categorias', autenticarToken, rotasCategorias.nova)
 app.get('/categorias/filtrarCategoria', rotasCategorias.filtrarCategoria)
 app.get('/categorias', autenticarToken, rotasCategorias.listarTodas)
-// app.get('/categorias/:id_categoria', rotasCategorias.listarPorId)
-// app.patch('/categorias/:id_categoria', rotasCategorias.atualizar)
-// app.put('/categorias/:id_categoria', rotasCategorias.atualizarTodos)
-// app.delete('/categorias/:id_categoria', rotasCategorias.deletar)
+app.get('/categorias/:id_categoria', rotasCategorias.ListarporID)
+app.patch('/categorias/:id_categoria', rotasCategorias.Atualizar)
+app.put('/categorias/:id_categoria', rotasCategorias.atualizarTodosCampos)
+app.delete('/categorias/:id_categoria', rotasCategorias.Deletar)
 
 // //Rotas subcategorias
 // app.post('/subcategorias', rotasSubcategorias.nova)
-// app.get('/subcategorias', rotasSubcategorias.listar)
+app.get('/subcategorias', autenticarToken, listarSubcategorias)
 // app.get('/subcategorias/:id_subcategoria', rotasSubcategorias.listarPorId)
 // app.patch('/subcategorias/:id_subcategoria', rotasSubcategorias.atualizar)
 // app.put('/subcategorias/:id_subcategoria', rotasSubcategorias.atualizarTodos)
 // app.delete('/subcategorias/:id_subcategoria', rotasSubcategorias.deletar)
 
 // // //rotasContas
-app.post('/rotasContas/:id_rotasContas', rotasContas.novaConta)
-app.get('/rotasContas/:id_rotasContas', rotasContas.listarContas)
-app.get('/rotasContas/:id_rotasContas', rotasContas.listarContaPorID)
-app.patch('/rotasContas/:id_rotasContas', rotasContas.atualizarContas)
-app.put('/rotasContas/:id_rotasContas', rotasContas.atualizarTodasContas)
-app.delete('/rotasContas/:id_rotasContas', rotasContas.deletarConta)
+app.post('/contas', rotasContas.novaConta)
+app.get('/contas', rotasContas.listarContas)
+app.get('/contas/:id_rotasContas', rotasContas.listarContaPorID)
+app.patch('/contas/:id_rotasContas', rotasContas.atualizarContas)
+app.put('/contas/:id_conta', rotasContas.atualizarTodasContas)
+app.delete('/contas/:id_conta', rotasContas.deletarConta)
 
 // // //Rotas Transacoes
 app.post('/transacoes', rotasTransacoes.novaTransacoes)

@@ -108,7 +108,7 @@ class rotasContas {
 
     try{
         const conta = await BD.query ('UPDATE contas SET nome = $1 , tipo_conta = $2, saldo = $3, ativo = $4, conta_padrao = $5 WHERE id_conta = $6 RETURNING *',
-            [nome, tipo_conta, saldo, ativo, conta_padrao]
+            [nome, tipo_conta, saldo, ativo, conta_padrao, id_conta]
         )
         res.status(200).json(conta.rows)
     }catch(error){

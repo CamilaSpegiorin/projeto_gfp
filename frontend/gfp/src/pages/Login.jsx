@@ -49,6 +49,22 @@ function Login () {
     setMensagem('');
   }
 
+        useEffect(() => {
+            const buscarUsuarioLogado = async () => {
+              const UsuarioLogado = await AsyncStorage.getItem('UsuarioLogado');
+                   if (UsuarioLogado) {
+                    const usuario = JSON.parse(UsuarioLogado);
+                  if(usuario.lembrar === true) { {
+                   navigate('/Principal')
+                }
+            }
+        }
+    }
+
+        buscarUsuarioLogado();
+    }, [])
+
+
   return (
     <div className="login-container">
       <div className="login-box">

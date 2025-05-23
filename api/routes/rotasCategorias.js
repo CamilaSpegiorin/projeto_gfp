@@ -137,6 +137,8 @@ static async Atualizar(req, res){
             console.error('Erro ao filtrar categoria', error);
             res.status(500).json({message: "Erro ao filtrar categoria", error: error.message})
         }
+
+
   }
 }
 
