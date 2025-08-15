@@ -22,13 +22,22 @@ app.get('/', (req, res) => {
 })
 
 //Rotas usuarios
+// app.post('/usuarios', rotasUsuarios.novoUsuario)
+// app.post('/usuarios/login', rotasUsuarios.login)
+// app.get('/usuarios', autenticarToken, rotasUsuarios.listarUsuarios)
+// //app.get('/usuarios/:id_usuario', rotasUsuarios.listarUsuariosPorId)
+// app.path('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.atualizar)
+// //app.put('/usuarios/:id_usuario', rotasUsuarios.atualizarTodos)
+// app.delete('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.deletar)
+
+//ROTAS USUARIOS 
 app.post('/usuarios', rotasUsuarios.novoUsuario)
 app.post('/usuarios/login', rotasUsuarios.login)
-app.get('/usuarios', autenticarToken, rotasUsuarios.listarUsuarios)
-//app.get('/usuarios/:id_usuario', rotasUsuarios.listarUsuariosPorId)
-app.path('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.atualizar)
-//app.put('/usuarios/:id_usuario', rotasUsuarios.atualizarTodos)
-app.delete('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.deletar)
+app.get('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.listarUsuariosPorID) 
+app.get('/usuarios', autenticarToken, rotasUsuarios.listarUsuarios) 
+app.delete('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.deletar) 
+app.put('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.atualizarTodos) 
+app.patch('/usuarios/:id_usuario', autenticarToken, rotasUsuarios.atualizar)
 
 // //Rotas categorias
 app.post('/categorias', autenticarToken, rotasCategorias.nova)
@@ -41,7 +50,7 @@ app.delete('/categorias/:id_categoria', rotasCategorias.Deletar)
 
 // //Rotas subcategorias
 // app.post('/subcategorias', rotasSubcategorias.nova)
-app.get('/subcategorias', autenticarToken, listarSubcategorias)
+//app.get('/subcategorias', autenticarToken, listarSubcategorias)
 // app.get('/subcategorias/:id_subcategoria', rotasSubcategorias.listarPorId)
 // app.patch('/subcategorias/:id_subcategoria', rotasSubcategorias.atualizar)
 // app.put('/subcategorias/:id_subcategoria', rotasSubcategorias.atualizarTodos)
